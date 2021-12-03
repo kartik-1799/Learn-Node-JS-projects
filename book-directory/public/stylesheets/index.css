@@ -1,0 +1,15 @@
+/* line 1, ../sass/index.scss */
+body {
+  background-image: url(/images/bg-images/OpenBook.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+/* line 5, ../sass/index.scss */
+body .add-book {
+  margin-top: 10rem;
+}
+/* line 7, ../sass/index.scss */
+body .add-book .form-control {
+  background-color: transparent;
+  border: none;
+}

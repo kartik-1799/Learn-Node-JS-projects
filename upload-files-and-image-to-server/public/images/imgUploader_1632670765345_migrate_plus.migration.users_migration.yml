@@ -1,0 +1,391 @@
+id: users_migration
+label: 'User migration'
+migration_group: hcl_d7_d9_migration
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  headers:
+    Accept: 'application/json; charset=utf-8'
+    Content-Type: application/json
+  authentication:
+    plugin: basic
+    username: superadmin
+    password: t{PNR9}6:E
+  # The URL of your JSON datasource
+  urls: https://straighttalkd7.lndo.site/users-export-data
+  item_selector: users
+  fields:
+    -
+      name: uid
+      label: 'User ID'
+      selector: uid
+    -
+      name: status
+      label: 'Active status'
+      selector: status
+    -
+      name: rid
+      label: 'Roles'
+      selector: rid
+    -
+      name: init
+      label: 'Init'
+      selector: init
+    -
+      name: password
+      label: 'Password'
+      selector: password
+    -
+      name: created
+      label: 'Created date'
+      selector: created
+    -
+      name: mail
+      label: 'E-mail'
+      selector: mail
+    -
+      name: path
+      label: 'Path'
+      selector: path
+    -
+      name: name
+      label: 'Name'
+      selector: name
+    -
+      name: access
+      label: 'Access'
+      selector: access
+    -
+      name: login
+      label: 'Login'
+      selector: login
+    -
+      name: field_first_name
+      label: 'First Name'
+      selector: field_first_name
+    -
+      name: field_last_name
+      label: 'Last Name'
+      selector: field_last_name
+    -
+      name: field_designation
+      label: 'Designation'
+      selector: field_position
+    -
+      name: field_education
+      label: 'Education'
+      selector: field_education
+    -
+      name: field_gender
+      label: 'Gender'
+      selector: field_gender
+    -
+      name: field_industry
+      label: 'Industry'
+      selector: field_industry
+    -
+      name: field_location
+      label: 'Location'
+      selector: field_location
+    -
+      name: field_organization_company
+      label: 'Organization/Company'
+      selector: field_organization_company
+    -
+      name: field_past_organization_s_
+      label: 'Past Organization(s)'
+      selector: field_background
+    -
+      name: field_social_presence
+      label: 'Social Presence'
+      selector: field_social_presense
+    -
+      name: field_job_title
+      label: 'Job Title'
+      selector: field_job_title_
+    -
+      name: field_privacy_policy
+      label: 'Privacy policy'
+      selector: field_privacy_policy
+    -
+      name: field_select_preferences
+      label: 'Select Preferences'
+      selector: field_select_preferences
+    -
+      name: field_send_relevant_informationa
+      label: 'Send Relevant Informational Content'
+      selector: field_send_relevant_informationa
+    -
+      name: field_country
+      label: 'Country'
+      selector: field_country
+    -
+      name: field_contact_mode
+      label: 'Contact Mode'
+      selector: field_contact_mode
+    -
+      name: field_phone
+      label: 'Phone'
+      selector: field_phone
+    -
+      name: field_profile_picture
+      label: 'Profile Picture'
+      selector: field_profile_picture
+    -
+      name: field_linkedin_url
+      label: 'linkedin URL'
+      selector: field_linkedin_url
+    -
+      name: field_referral_url
+      label: 'Referral URL'
+      selector: field_referral_url
+    -
+      name: field_utm_campaign
+      label: 'UTM Campaign'
+      selector: field_utm_campaign
+    -
+      name: field_utm_content
+      label: 'UTM Content'
+      selector: field_utm_content
+    -
+      name: field_utm_medium
+      label: 'UTM Medium'
+      selector: field_utm_medium
+    -
+      name: field_utm_source
+      label: 'UTM Source'
+      selector: field_utm_source
+    -
+      name: field_utm_term
+      label: 'UTM Term'
+      selector: field_utm_term
+  ids:
+    uid:
+      type: integer
+  # Constants.
+  constants:
+    user_picture: 'public://images/user-profile/'
+    #file_blogger_banner: 'public://images/blog/blogger/banner/'
+
+  track_changes: true
+
+process:
+  name: name
+  pass: password
+  mail: mail
+  created: created
+  access: access
+  login: login
+  status: status
+  init: init
+  roles:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: rid
+    -
+      plugin: skip_on_value
+      method: process
+      value:
+        - Editor
+        - SEO Expert
+        - Guest Author
+        - Digital Head
+        - Chief Editor
+        - Read Only
+    -
+      plugin: static_map
+      map:
+        administrator: administrator
+        Administrators: administrators
+        Anonymous user: Anonymous user
+        Authenticated user: Authenticated user
+        Editor: Editor
+        SEO Expert: SEO Expert
+        Guest Author: Guest Author
+        Digital Head: Digital Head
+        Chief Editor: Chief Editor
+        Read Only: Read Only
+  field_first_name:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_first_name
+  field_last_name:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_last_name
+  field_designation:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_designation
+  field_education:  
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_education
+  field_gender:  
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_gender
+  field_industry:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_industry
+  field_location:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_location
+  field_organization_company:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_organization_company
+  field_past_organization_s_:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_past_organization_s_
+  field_social_presence:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_social_presence
+  field_job_title:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_job_title
+  field_select_preferences:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_select_preferences
+  field_send_relevant_informationa:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_send_relevant_informationa
+  field_country:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_country
+  field_contact_mode:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_contact_mode
+  field_user_phone:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_user_phone
+  field_user_privacy_policy:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_privacy_policy
+  field_profile_picture:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_profile_picture
+    -
+      plugin: hcl_image_import
+      destination: constants/field_profile_picture
+      uid: 1
+      title: picture_text
+      alt: picture_text
+      skip_on_missing_source: true
+      reuse: true
+
+  # Linkedin Link.
+  temp_field_linkedin_url:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_linkedin_url
+    -
+      plugin: explode
+      delimiter: ','
+  field_linkedin_url/title:
+    -
+      plugin: skip_on_empty
+      source: '@temp_field_linkedin_url'
+      method: process
+    -
+      plugin: extract
+      index:
+        - 0
+  field_linkedin_url/uri:
+    -
+      plugin: skip_on_empty
+      source: '@temp_field_linkedin_url'
+      method: process
+    -
+      plugin: extract
+      index:
+        - 1
+  # Refferal Link.
+  field_referral_url:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_referral_url
+  # Metatags.
+  # field_meta_tags:
+  #   -
+  #     plugin: skip_on_empty
+  #     method: process
+  #     source: field_meta_tags
+  #   -
+  #     plugin: hcl_metatags
+
+  # Path Alias
+  'path/pathauto':
+    plugin: default_value
+    default_value: 0
+  'path/alias': path
+
+  #UTMs
+  field_utm_campaign:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_utm_campaign
+  field_utm_content:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_utm_content
+  field_utm_medium:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_utm_medium
+  field_utm_source:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_utm_source
+  field_utm_term:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: field_utm_term
+
+destination:
+  plugin: entity:user
+
+migration_dependencies: {}
+dependencies:
+  enforced:
+    module:
+      - hcl_d9_migration

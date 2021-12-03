@@ -1,0 +1,12 @@
+body{
+    background-image: url(/images/bg-images/OpenBook.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    .add-book{
+        margin-top: 10rem;
+        .form-control{
+            background-color: transparent;
+            border: none;
+        }
+    }
+}
